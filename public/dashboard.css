@@ -1,0 +1,767 @@
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #06060a;
+  color: #e0e0e0;
+  font-family: 'Inter', sans-serif;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+h1, h2, h3 {
+  font-family: 'Space Grotesk', sans-serif;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+}
+
+/* Левая панель (Sidebar) */
+.sidebar {
+  position: fixed;
+  left: -280px;
+  top: 0;
+  width: 280px;
+  height: 100vh;
+  background: rgba(255, 255, 255, 0.03);
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(10px);
+  transition: left 0.3s ease;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.sidebar.active {
+  left: 0;
+}
+
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 1.25rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.sidebar-header h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.close-sidebar {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease;
+}
+
+.close-sidebar:hover {
+  color: #ffffff;
+}
+
+.close-sidebar svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Навигация */
+.sidebar-nav {
+  flex: 1;
+  padding: 1rem 0;
+}
+
+.sidebar-nav ul {
+  list-style: none;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  padding: 0.875rem 1.25rem;
+  color: rgba(255, 255, 255, 0.6);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.nav-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+}
+
+.nav-item.active {
+  background: rgba(192, 192, 192, 0.15);
+  color: #ffffff;
+  border-left: 3px solid #c0c0c0;
+}
+
+.nav-item svg {
+  width: 20px;
+  height: 20px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Футер сайдбара */
+.sidebar-footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 1rem 1.25rem;
+}
+
+.user-info {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.user-avatar svg {
+  width: 20px;
+  height: 20px;
+  stroke: rgba(255, 255, 255, 0.6);
+}
+
+.user-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.user-name {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-email {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.5);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.logout-btn {
+  width: 100%;
+  padding: 0.75rem;
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: 8px;
+  color: #ef4444;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.logout-btn:hover {
+  background: rgba(239, 68, 68, 0.25);
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+.logout-btn svg {
+  width: 18px;
+  height: 18px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Overlay */
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(2px);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  z-index: 999;
+}
+
+.sidebar-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Основной контент */
+.main-content {
+  min-height: 100vh;
+  transition: margin-left 0.3s ease;
+}
+
+/* Верхняя панель */
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.25rem 2rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(10px);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+/* Бургер-меню */
+.burger-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  transition: transform 0.2s ease;
+}
+
+.burger-menu:hover {
+  transform: scale(1.1);
+}
+
+.burger-menu span {
+  width: 24px;
+  height: 2px;
+  background: #c0c0c0;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+.page-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  flex: 1;
+}
+
+.topbar-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+/* Контентная область */
+.content-area {
+  padding: 2rem;
+}
+
+.welcome-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.welcome-card h2 {
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.welcome-card p {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 1rem;
+}
+
+/* Страница "В разработке" */
+.under-development {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  text-align: center;
+  padding: 3rem 1.5rem;
+}
+
+.dev-icon {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dev-icon svg {
+  width: 80px;
+  height: 80px;
+  stroke: rgba(255, 255, 255, 0.15);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.tools-icon {
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  stroke: #eab308 !important;
+  animation: hammer 2s ease-in-out infinite;
+  transform-origin: center;
+}
+
+@keyframes hammer {
+  0%, 100% {
+    transform: rotate(-10deg) translateY(0);
+  }
+  50% {
+    transform: rotate(10deg) translateY(-8px);
+  }
+}
+
+.under-development h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #ffffff;
+}
+
+.dev-text {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 0.5rem;
+}
+
+.dev-subtext {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* Страница "Список сделок" */
+.trades-header {
+  margin-bottom: 2rem;
+}
+
+.account-switcher {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.account-btn {
+  flex: 1;
+  min-width: 250px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 2px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: 'Inter', sans-serif;
+}
+
+.account-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+.account-btn.active {
+  background: rgba(192, 192, 192, 0.15);
+  border-color: #c0c0c0;
+}
+
+.account-btn-icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.account-btn-info {
+  text-align: left;
+}
+
+.account-btn-name {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #ffffff;
+  margin-bottom: 0.25rem;
+}
+
+.account-btn-type {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.account-stats-card {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.account-stat {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  padding: 1.25rem;
+  text-align: center;
+}
+
+.account-stat-label {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 0.5rem;
+}
+
+.account-stat-value {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.account-stat-value.secondary {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.account-stat-value.profit {
+  color: #22c55e;
+}
+
+.account-stat-value.loss {
+  color: #ef4444;
+}
+
+.trades-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.trades-card-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.trades-card-header h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.trades-table-container {
+  overflow-x: auto;
+}
+
+.trades-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.trades-table th,
+.trades-table td {
+  padding: 1rem 1.25rem;
+  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.trades-table th {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.trades-table tbody tr {
+  transition: background 0.2s ease;
+}
+
+.trades-table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.trades-table td {
+  font-size: 0.95rem;
+  color: #e0e0e0;
+}
+
+.trades-table td.profit {
+  color: #22c55e;
+  font-weight: 600;
+}
+
+.trades-table td.loss {
+  color: #ef4444;
+  font-weight: 600;
+}
+
+.trade-type {
+  display: inline-block;
+  padding: 0.25rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.trade-type.buy {
+  background: rgba(34, 197, 94, 0.15);
+  color: #22c55e;
+}
+
+.trade-type.sell {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+}
+
+.trade-status {
+  display: inline-block;
+  padding: 0.25rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.trade-status.status-open {
+  background: rgba(234, 179, 8, 0.15);
+  color: #eab308;
+}
+
+.trade-status.status-closed {
+  background: rgba(168, 85, 247, 0.15);
+  color: #a855f7;
+}
+
+.empty-state {
+  text-align: center !important;
+  padding: 3rem 1rem !important;
+  color: rgba(255, 255, 255, 0.4);
+  font-style: italic;
+}
+
+/* Статистика - верхние виджеты */
+.stats-grid-top {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: all 0.2s ease;
+}
+
+.stat-card:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+.stat-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.stat-icon svg {
+  width: 24px;
+  height: 24px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.stat-icon.green {
+  background: rgba(34, 197, 94, 0.15);
+}
+
+.stat-icon.green svg {
+  stroke: #22c55e;
+}
+
+.stat-icon.blue {
+  background: rgba(59, 130, 246, 0.15);
+}
+
+.stat-icon.blue svg {
+  stroke: #3b82f6;
+}
+
+.stat-icon.yellow {
+  background: rgba(234, 179, 8, 0.15);
+}
+
+.stat-icon.yellow svg {
+  stroke: #eab308;
+}
+
+.stat-icon.red {
+  background: rgba(239, 68, 68, 0.15);
+}
+
+.stat-icon.red svg {
+  stroke: #ef4444;
+}
+
+.stat-icon.purple {
+  background: rgba(168, 85, 247, 0.15);
+}
+
+.stat-icon.purple svg {
+  stroke: #a855f7;
+}
+
+/* График профита */
+.chart-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.chart-header h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.period-selector {
+  display: flex;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 0.25rem;
+  border-radius: 8px;
+}
+
+.period-btn {
+  padding: 0.5rem 1rem;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  font-family: 'Inter', sans-serif;
+}
+
+.period-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.period-btn.active {
+  background: rgba(192, 192, 192, 0.15);
+  color: #ffffff;
+}
+
+.chart-container {
+  height: 350px;
+  position: relative;
+}
+
+.stat-info {
+  flex: 1;
+}
+
+.stat-label {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 0.25rem;
+}
+
+.stat-value {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .topbar {
+    padding: 1rem 1.5rem;
+  }
+
+  .page-title {
+    font-size: 1.25rem;
+  }
+
+  .content-area {
+    padding: 1.5rem;
+  }
+
+  .stats-grid-top {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+  .chart-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .period-selector {
+    width: 100%;
+    overflow-x: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .sidebar {
+    width: 100%;
+    left: -100%;
+  }
+
+  .stats-grid-top {
+    grid-template-columns: 1fr;
+  }
+}
